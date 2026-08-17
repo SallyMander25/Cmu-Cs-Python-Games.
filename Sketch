@@ -1,0 +1,77 @@
+#include <Servo.h>
+//Library that houses the functions for moving the servo
+Servo lock;
+// all of the pin number variables
+int ledPin=13;
+int BuzzPin = 5 ; 
+int VSensor=7;
+int Viberation;
+//KFreq is a table that is used to see how many milliseconds it should take before the next knock in the frequcecy should happen
+int KFreq[10]={0,570,420,730,270,270,560,435,650,270};
+// Another knock frequency {0,400,820,820,400,820,400,820,820,400}
+//Used to find the knock level in KFreq
+int KLev=0;
+//stands for Viberation debounce time used to help with debounce delay
+unsigned long VDT;
+//used with kFrequency and the millis() function to compare the time between the last viberation and current vibration
+unsigned long Freq;
+//amount of knocks needed to complete the table 
+int Kamount;
+int lockedNumber=80;
+void setup() {
+  //finds how many variables are in the KFreq and assigns that number to Kamount
+  Kamount=sizeof(KFreq)/sizeof(KFreq[0]);
+  //attaches the servo motor logic pin to 8
+  lock.attach(8);
+  //turns the servo motor to the lockedNumber variable
+  lock.write(lockedNumber);
+  //changes pinmodes
+  pinMode(2,OUTPUT);
+  pinMode(VSensor,INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(BuzzPin, OUTPUT);
+  Serial.begin(9600);
+  digitalWrite(3,HIGH);
+} 
+void loop() {
+  Viberation=digitalRead(VSensor);
+  int KElip=KFreq[KLev];
+  if (KLev==Kamount){
+    //when the knock level equals the amount of variables in the KFreq table, opens the servo, gives a low pitch buzzer and long delay
+      lock.write(180);
+      delay(350);
+      tone(BuzzPin,500,2000);
+      delay(25000);
+      KLev=0;
+    }
+  //adds a debounce delay so viberations don't get triggered constantly well knocking
+  if (Viberation==HIGH && millis()-VDT>=150){
+//should be changed but should say if it was more than 2 times than the largest number in the KFreq table then the Knock level is reset
+    if (millis()-VDT>=1000){
+      KLev=0;
+      KElip=KFreq[KLev];
+    }
+    //sets debounce number to time in milliseconds
+    VDT=millis();
+     //Serial.print(KElip);
+     //Serial.print(millis()-VDT);
+    if (millis()-Freq>=KElip && millis()-Freq<=KElip+70 || KElip==0){
+      Serial.print(millis()-Freq);
+      //sets freqency to time in milliseconds and increases the Knock level by one
+      Freq=millis();
+      KLev++;
+      //Serial.println("Correct");
+    }
+    else{
+      //resets the circut when the frequency is incorrect, making a high pitch buzzer noise and printing incorrect
+      KLev=0;
+      Serial.println(millis()-Freq);
+     Freq=millis();
+     Serial.print("Incorrect");
+     digitalWrite(ledPin,LOW);
+     lock.write(lockedNumber);
+     tone(BuzzPin,7500,1500);
+     delay(1800);
+    }
+  }
+}
