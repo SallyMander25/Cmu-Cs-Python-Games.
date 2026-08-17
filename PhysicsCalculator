@@ -1,0 +1,236 @@
+#HOW TO USE.. press run to reset the code after you are done with a equation or to start, then input all the known variables and it will calculate them into all the- 
+#values that it can given the information, there is an exponent box to lower or heighten a value and you input your value in the bar (make sure you don't do anything but numbers or you will get a error!!!).
+# took me 5 hours and 30 minutes to create
+app.background="lightgrey"
+cGravity=float(6.67*(10**-11))
+#Gravtional force doesnt work for some reason, probably because of the float being so small it can't calculate(good thing i made a calculator specific to gravity huh)
+# this code would work so much better if there was a way to manually activate the calculate function
+eGravity=9.81
+C=3*(10**8)
+#constants^^
+displacement=0
+time=0
+velocity=0
+velocityF=0
+velocityI=0
+acceleration=0
+accelerationC=0
+forceC=0
+accelerationT=0
+force=0
+mass=0
+compareMass=0
+momentum=0
+kineticE=0
+work=0
+power=0
+radius=0
+finalAnswer=""
+#changables^^
+answerAmount=0
+physicMV={
+    "Displacement": displacement,
+    "Time":time,
+    "Velocity":velocity,
+    "Final Velocity":velocityF,
+    "Initial Velocity":velocityI,
+    "Acceleration":acceleration,
+    "Force":force,
+    "Acceleration Time":accelerationT,
+    "Secondary Mass":compareMass,
+    "Mass":mass,
+    "Radius":radius,
+    "Momentum":momentum,
+    "Work":work,
+    "Power":power,
+    "Kinetic Energy":kineticE,
+    "Centripetal Acceleration":accelerationC,
+    "Centripetal Force":forceC
+}
+#for key, value in physicMV.items():
+ ##  if key=="Displacement":
+   #     value=velocity*time
+# the dictionary that syncs the strings of the variables to the actual variabls
+calName=Label("Sal's Physical World Calculator",200,30,size=25,fill=gradient(rgb(randrange(1,256),randrange(1,256),randrange(1,256)),rgb(randrange(1,256),randrange(1,256),randrange(1,256)),start="top-left"),bold=True)
+calVariables=Group()
+calVN=Group()
+varAnswers=Group()
+physicList=list(physicMV.keys())
+# having this list helps with ordering the dictionary because python dictionarys are not ordered or indexable and need the string of the key to work, so using the list you can input a number which links to the list value which would then link to the dictionary value
+calVariablesPrev=Group(Rect(10,75,380,60,fill="grey"),Label("Select a Variable to change",200,105,size=35,font="grenze"))
+varLabel=Label("",120,70,size=25,bold=True)
+varBar=Rect(20,100,360,70,fill="orange",border="red",borderWidth=4,visible=False)
+varChange=""
+varType=Label("",60,140,size=20)
+exponentBox=Rect(170,225,60,40,fill="Teal")
+arrowUp=Label("^",200,220,size=50,fill="blue")
+arrowDown=Label("V",200,280,size=30,bold=True,fill="blue")
+exponentBox.value=0
+exponent=Label("",200,245,size=20,bold=True)
+exponentExp=Label("(Write 0 if non) exponent box -->",80,245,bold=True,size=10)
+calExp1=Label("Distance=meters Time=seconds Velocity=m/s Acceleration=m/s^2",200,300,size=12,bold=True)
+calExp2=Label("Force=Newtons Mass=Kg",200,350,size=30)
+varChanging=Group(varLabel,varBar,varType,exponentBox,arrowUp,arrowDown,exponent,exponentExp,calExp1,calExp2)
+varChanging.visible=False
+answerButton=Group(Rect(330,45,70,355,fill='purple'),Label("Add more",365,100,size=12,bold=True),Label("Variables",365,350,size=13,bold=True))
+answerButton.visible=False
+# all of the shapes that make the screen
+for i in range(len(physicMV)):
+    if i%2==0:
+        color="yellow"
+    else:
+        color="red"
+    if i==0:
+        calVariables.add(Rect(10,45+(40*i),380,40,fill=color))
+        calVN.add(Label(physicList[i],200,70+(40*i),size=14,bold=True))
+    elif i>=9:
+        calVariables.add(Rect(10,45+40*(i-8),190,40,fill=color))
+        calVN.add(Label(physicList[i],100,70+40*(i-8),size=14,bold=True))
+    else:
+        calVariables.add(Rect(200,45+(40*(i)),190,40,fill=color))
+        calVN.add(Label(physicList[i],300,70+(40*i),size=14,bold=True))
+    calVariables.add(calVN)
+    calVN.toFront()
+    calVariables.visible=False
+    pass
+# creates the layout of variables to click on
+def updateGlobalVar():
+    global displacement,time,velocity,velocityF,velocityI,acceleration,accelerationC,forceC,force,mass,comapreMass,momentum,kineticE,work,power,radius,finalAnswer,accelerationT
+    displacement=physicMV["Displacement"]
+    time=physicMV["Time"]
+    velocity=physicMV["Velocity"]
+    velocityI=physicMV["Initial Velocity"]
+    velocityF=physicMV["Final Velocity"]
+    acceleration=physicMV["Acceleration"]
+    accelerationC=physicMV["Centripetal Acceleration"]
+    forceC=physicMV["Centripetal Force"]
+    force=physicMV["Force"]
+    accelerationT=physicMV["Acceleration Time"]
+    mass=physicMV["Mass"]
+    work=physicMV["Work"]
+    momentum=physicMV["Momentum"]
+    power=physicMV["Power"]
+    compareMass=physicMV["Secondary Mass"]
+    kineticE=physicMV["Kinetic Energy"]
+    radius=physicMV["Radius"]
+#syncs the global variables to there dictioanry counterparts
+def Calculate():
+    global displacement,time,velocity,velocityF,velocityI,acceleration,accelerationC,forceC,force,mass,comapreMass,momentum,kineticE,work,power,radius,finalAnswer,accelerationT
+    finalAnswer=""
+    #problems with all the speed calculations, fix now please
+    if velocity*time!=0:
+        physicMV["Displacement"]=velocity*time
+    elif velocityI*time*acceleration!=0:
+        physicMV["Displacement"]=(velocityI*time)+(0.5*acceleration*(time**2))
+    abs(physicMV["Displacement"])
+    if velocity*displacement!=0:
+        physicMV["Time"]=displacement/velocity
+    elif acceleration* displacement!=0:
+        physicMV["Final Velocity"]=(2*acceleration*displacement)**0.5
+    abs(physicMV["Time"])
+    if displacement*time!=0:
+        physicMV["Velocity"]=displacement/time
+    elif acceleration*time!=0:
+        physicMV["Velocity"]=acceleration*time
+    elif velocityF*time!=0:
+        physicMV["Velocity"]=(velocityF-velocityI)/time
+    abs(physicMV["Velocity"])
+    #problems
+    if velocity*displacement!=0:
+        physicMV["Acceleration"]=(velocity**2)/(displacement*2)
+    elif force*mass!=0:
+        physicMV["Acceleration"]=force/mass
+    abs(physicMV["Acceleration"])
+    if force*acceleration!=0:
+        physicMV["Mass"]=force/acceleration
+    if velocityF*mass!=0:
+        physicMV["Force"]=velocityF*mass
+    elif acceleration*mass!=0:
+        physicMV["Force"]=mass*acceleration
+    # problems
+    if time!=0 and accelerationT==0: 
+        physicMV["Acceleration Time"]=float(time**2)
+    if mass*velocity!=0:
+        physicMV["Momentum"]=mass*velocity
+    elif time!=0:
+        physicMV["Momentum"]=time
+    if velocity*radius!=0:
+        physicMV["Centripetal Acceleration"]=(velocity**2)/radius
+    elif forceC*mass!=0:
+        physicMV["Centripetal Acceleration"]=forceC/mass
+    if mass*accelerationC!=0:
+        physicMV["Centripetal Force"]=mass*accelerationC
+    if mass*velocity!=0:
+        physicMV["Kinetic Energy"]=0.5*mass*(velocity**2)
+    if force*displacement!=0:
+        physicMV["Work"]=force*displacement
+    impulse=force
+    physicList=list(physicMV.keys())
+# calculates all of the values using all of the physics equations
+def onMousePress(mouseX,mouseY):
+    debounce=False
+    global varChange
+    if answerButton.visible==True and answerButton.contains(mouseX,mouseY):
+        varAnswers.clear()
+        debounce=True
+        sleep(0.01)
+        calVariables.visible=True
+        answerButton.visible=False
+    if calVariablesPrev.visible==True and calVariablesPrev.hits(mouseX,mouseY):
+        calVariablesPrev.visible=False
+        calVariables.visible=True
+        debounce=True
+        sleep(0.01)
+    #changes screen when clicked(sleep added as debounce feature to remove unwanted variable clicking)
+    for i in calVN.children:
+        if i.hits(mouseX,mouseY) and debounce==False:
+            varChange=i.value
+            calVariables.visible=False
+            varLabel.value=varChange
+            varChanging.visible=True
+        #changes the selected variable to the variable clicked
+    if arrowUp.contains(mouseX,mouseY):
+        exponentBox.value+=1
+        pass
+    if arrowDown.contains(mouseX,mouseY):
+        exponentBox.value-=1
+    exponent.value=exponentBox.value
+    # increases or decreases the exponent amount on arrow click
+def onKeyPress(key):
+    if varBar.visible==True:
+        if key=="enter":
+            varType.centerX=60
+            if exponentBox.value>=3:
+                physicMV[varChange]=int(float(varType.value)*10**exponentBox.value)
+            else:
+                physicMV[varChange]=float(float(varType.value)*10**exponentBox.value)
+                print(physicMV[varChange])
+            varType.value=""
+            exponentBox.value=0
+            answerButton.visible=True
+            varChanging.visible=False
+            for i in range(len(physicList)):
+                updateGlobalVar()
+                Calculate()
+                if i==len(physicList)-1:
+                    global answerAmount
+                    answerAmount+=1
+                    print(" ",answerAmount)
+                    for j in range(len(physicList)):
+                        for key,value in physicMV.items():
+                            if key==physicList[j]:
+                                varAnswers.add(Label(key+" =",80,60+(j*20),fill="darkslategrey",bold=True,opacity=90))
+                                varAnswers.add(Label(value,200,60+(j*20),bold=True))
+                        if physicMV[physicList[j]]!=0:
+                           print(physicList[j],physicMV[physicList[j]])
+                           print("-----------------------")
+            #inputs variable into calcuator, gives all values it can create, then resets to allow further use
+        elif key=="backspace" and varType.value!="":
+            string=str(varType.value)
+            varType.value=string[:-1]
+            varType.centerX-=5
+        #its backspace
+        elif key!="backspace":
+            varType.value=varType.value+key
+            varType.centerX+=5
+        # adds characters to search bar
