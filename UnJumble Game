@@ -1,0 +1,101 @@
+//global variables
+var usedWordList=[];
+var words=getColumn("Words","Word");
+var easyWords=[];
+var mediumWords=[];
+var hardWords=[];
+var wrongGuesses=0;
+var currentWord;
+//organizes the words into seperate catagories based on the word size to estamate the difficulty in unjumbling
+for (var i=0;i<words.length;i++){
+  if (words[i].length<4){
+    appendItem(easyWords,words[i]);
+  }
+  else if(words[i].length<7){
+    appendItem(mediumWords,words[i]);
+  }
+  else{
+    appendItem(hardWords,words[i]);
+  }
+}
+//event functions for if the user clicks a button, which progresses the program and/or triggers a function
+onEvent("2PlayerButton","click",function(){
+  createWord(getText("wordTextInput"));
+});
+onEvent("easyButton","click",function(){
+  createWord(easyWords[randomNumber(0,easyWords.length-1)]);
+});
+onEvent("mediumButton","click",function(){
+  createWord(mediumWords[randomNumber(0,mediumWords.length-1)]);
+});
+onEvent("hardButton","click",function(){
+  createWord(hardWords[randomNumber(0,hardWords.length-1)]);
+});
+onEvent("confirmGuessButton","click",function(){
+  if(getText("guessTextInput")==currentWord){
+    setText("finishTextLabel",changeEndScreen(true));
+  }
+  else{
+    wrongGuesses++;
+    setText("wrongGuessesLabel",wrongGuesses+" Wrong Guesses");
+    setProperty("giveUpButton","hidden",false);
+  }
+});
+onEvent("giveUpButton","click",function(){
+  setText("finishTextLabel",changeEndScreen(false));
+});
+onEvent("replayButton","click",function(){
+  setScreen("startScreen");
+});
+//creates the word needed to play the game given a word in the parameters then updates the program to the second screen
+function createWord(choosenWord){
+  currentWord=choosenWord;
+  setProperty("giveUpButton","hidden",true);
+  wrongGuesses=0;
+  appendItem(usedWordList,choosenWord);
+  setText("choosenTextLabel",jumbleString(choosenWord));
+  setScreen("guessScreen");
+}
+//changes the screen to the end screen, updates the text area for used words, and resets the program for future use
+function changeEndScreen(guessCorrect){
+  setText("guessTextInput","");
+  setText("wordTextInput","");
+  setText("wrongGuessesLabel","");
+  setText("usedWordsLabel",usedWordList.join("\n"));
+  setScreen("finishScreen");
+  var iq=(200-((14-currentWord.length)*5))/((wrongGuesses/5)+1);
+  //iq cannot be over 200 or under 45
+  //uses an equation to estamate the users iq to then display to them say they don't give up
+  if (iq>200){
+    iq=200;
+  }
+  else if(iq<45){
+    iq=45;
+  }
+  //jumbles the usedWordList into a text area to display
+  for (var i=0;i<usedWordList.length;i++){
+    if (i==0){
+      setText("startTextArea",jumbleString(usedWordList[randomNumber(0,usedWordList.length-1)]));
+    }
+    else{
+      setText("startTextArea",getText("startTextArea")+" "+jumbleString(usedWordList[randomNumber(0,usedWordList.length-1)]));
+    }
+  }
+  //if guessedcorrect will return iq else it will return "You gave up :("
+  if(guessCorrect==true){
+    return "Your IQ is "+iq;
+  }
+  else{
+    return "You gave up 🖕 loser";
+  }
+}
+//inputs a string then the function randomizes the placement of the characters inside of the string before returning a new string with those randomized placements.
+function jumbleString(string){
+  for(var i=0;i<string.length;i++){
+    var randomChar=randomNumber(0,string.length-1);
+    var tempString=string.substring(0,randomChar)+string.substring(randomChar+1,string.length);
+    string=string[randomChar]+tempString;
+  }
+  return string;
+}
+
