@@ -1,0 +1,130 @@
+//kevin did zero work in this and is not a good partner at all i should have never married him
+//Variables
+var atomNames=getColumn("Periodic Table Elements","Name");
+var atomicWeights=getColumn("Periodic Table Elements","Atomic Weight");
+var atomicNumber=getColumn("Periodic Table Elements","Atomic Number");
+var atomImages=getColumn("Periodic Table Elements","Image");
+var atomMelting=getColumn("Periodic Table Elements","Melting Point");
+var atomBoiling=getColumn("Periodic Table Elements","Boiling Point");
+var atomDensity=getColumn("Periodic Table Elements","Density");
+var atomPhase=getColumn("Periodic Table Elements","Phase at Room Temperature");
+var atomClassification=getColumn("Periodic Table Elements","Atom Classification");
+var atomUses=getColumn("Periodic Table Elements","Uses");
+var atomGroup=getColumn("Periodic Table Elements",'Group');
+var input=-1;
+var isElementCool=0;
+//all the button functions which trigger the approperate function per there specific button
+onEvent("confirmButton","click",function(){
+  infoScreenChange();
+});
+onEvent("salButton","click",function(){
+  funChangeScreen();
+});
+onEvent("coolReturnButton","click",function(){
+  setScreen("addInfoScreen");
+});
+onEvent("infoReturnButton","click",function(){
+  setScreen("addInfoScreen");
+});
+//function which changes the data in the information screen 
+function infoScreenChange(){
+  //finds the atomNames based on either the number or the name of the atom
+  var elementName="aaa";
+  for (var i=0;i<atomNames.length;i++){
+    if (getNumber("atomicNumberInput")==atomicNumber[i]){
+      input=i;
+    }
+    else if(getText("atomicNameInput")!=""){
+      //set of variables converts all words to a capitalized proper variety
+      elementName=getText("atomicNameInput");
+      var elementChar=elementName[0];
+      elementName=elementName.substring(1,elementName.length);
+      elementName=elementChar.toUpperCase()+elementName.toLowerCase();
+      if(elementName==atomNames[i]){
+        input=i;
+      }
+    }
+  }
+  //sets all of the information for the infoScreen based on the atom selected
+  if (input!=-1){
+    setScreen("InfoScreen");
+    setText("atomicNumberText", atomNames[input]+"'s atomic number is "+atomicNumber[input]);
+    setText("elementNameText",atomNames[input]);
+    setText("atomicWeightText", atomNames[input]+"'s atomic Weight is "+atomicWeights[input]);
+    setImageURL("atomImage",atomImages[input]);
+    setText("confirmButton","Confirm");
+    var Density;
+    if (atomDensity[i]>1){
+      Density="a dense element";
+    }
+    else{
+      Density="not a dense element";
+    }
+    setText("atomDiscription",atomNames[input]+" is a "+atomClassification[input]+" with the Melting point of the element being "+atomMelting[input]+" Fahrenheit and a Boiling Point of "+atomBoiling[input]+" Fahrenheit.\n This means that "+atomNames[input]+" is a "+atomPhase[input]+" at room temperature,also the atom is considered "+Density+" and belongs to the group called "+atomGroup[input]+".\n This element is mostly found in "+atomUses[input]+".");
+  }
+  else{
+    //for stupid people who can't spell or type a good number to tell them how stupid they are
+    setText("confirmButton","Please input an element");
+  }
+}
+function funChangeScreen(){
+  //all of the variables that are needed to run the code that makes sal like things and rant about them
+  isElementCool=0;
+  var original;
+  var randomAmount=0;
+  var reasonHate=["It's so shiny","it should not be a "+atomPhase[input]+" at room temperature",atomBoiling[input]+" is such a boring boiling point","a "+atomDensity[input]+" density is stupid","You know what, all "+atomClassification[input]+" are dumb","a weight of "+atomicWeights[input]+" is too much for my liking","I hate how it doesn't even resemble other "+atomGroup[input],"It makes sense that "+atomUses[input]+" are made out of "+atomNames[input]+" because they are all horrible"];
+  var reasonLove=["It's so cool","I love it's density of "+atomDensity[input],"being a "+atomPhase[input]+" at room temperature is super convenient","it truly is a role model for the rest of the "+atomClassification[input],"It's atomic weight of "+atomicWeights[input]+" is very useful","It's so cool that "+atomNames[input]+" makes up "+atomUses[input]+"which are all very cool",atomNames[input]+" really stands out compared to other "+atomGroup[input],"I love that it's melting point is "+atomMelting[input]+" Farhenheit as that makes it super useful"];
+  var hateText="I hate "+atomNames[input]+" because ";
+  var loveText="I love "+atomNames[input]+" because ";
+  //sal likes prime numbers
+  for(var i=2;i<=Math.sqrt(input+1);i++){
+    if ((input+1)%i===0){
+      //should have used a true/false statement but i choice the numbers way
+      isElementCool+=1;
+    }
+  }
+  setImageURL("coolImage",atomImages[input]);
+  setScreen("coolScreen");
+  //creates the rant of sal based on if sal likes 
+  if (isElementCool>0){
+    setText("isCoolText","No, "+atomNames[input]+" is not Cool!");
+    //codes could run for a possible of 1000 times but will most likely break before than which is has a 10% chance of doing so per loop
+    for(var j=0;j<1000;j++){
+      while(original==randomAmount){
+        //prevents the same variable to be choicen from a list twice in a row
+        randomAmount=randomNumber(1,10);
+      }
+      original=randomAmount;
+      if (randomAmount<10){
+        hateText+=reasonHate[randomNumber(0,(reasonHate.length)-1)];
+        hateText+=" and ";
+      }
+      else{
+        break;
+      }
+    }
+    //sets the text of the rant to hateText which is an amogomation of all of the rant variables combined randomly
+    hateText+="I HATE IT.";
+    setText("isCoolExplain",hateText);
+  }
+  //same thing as the before stuff but instead of hate theres Love!
+  else{
+    setText("isCoolText","Yes, "+atomNames[input]+" is Cool!!");
+    for(var k=0;k<1000;k++){
+      randomAmount=randomNumber(1,10);
+      while(original==randomAmount){
+        randomAmount=randomNumber(1,10);
+      }
+      original=randomAmount;
+      if(randomAmount<10){
+        loveText+=reasonLove[randomNumber(0,(reasonLove.length)-1)];
+        loveText+=" and ";
+      }
+      else{
+        break;
+      }
+    }
+    loveText+="I love it!";
+    setText("isCoolExplain",loveText);
+  }
+}
