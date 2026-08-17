@@ -1,0 +1,96 @@
+app.count = 0
+rand_text = ['You better sleep with one eye open...',"erm, what the sigma?","Would you eat a dog?",'Do you like goofy goobers??', 'You are super cool', "You're super smart", "I'm depressed",'Come down to Watertown NY','Do you like cantalope?','Did you hear of the war in my home country?',"Free Ukraine!!!","Are you a democrate or a republican","Hey man dont worry it'll be saul goodman",'Have you ever tasted lasania before?','Wanna come over to talk some more?',"Don't leave me please",'Im so sorry','Your my bestest freind I ever had :(',"don't touch my tail","I'm going to murder you in your sleep","You're*","You're a shame...","I love that!!!",'Suck an egg',"Is that a threat??","jeez man didn't mean to insult :/","...","Don't you dare insult me!!!",'no','Yes']
+rand_person1=[]
+rand_person2=[]
+Rect(0, 0, 400, 400, fill=None, border='gainsboro', borderWidth=20)
+Rect(35, 355, 300, 22, fill='lightGrey', border='darkGrey', opacity=50)
+Rect(340, 355, 30, 22, fill='lightGrey', border='darkGrey', opacity=50)
+Polygon(345, 360, 350, 367.5, 345, 375, 370, 367.5, fill='lightGrey')
+messageCount = Label('message count: 0', 370, 350, fill='dimGrey', size=10,
+                     align='right')
+Label('Press space to enter a message', 45, 365, fill='dimGrey', size=10,
+      align='left')
+WhosSpeaking=Label('Trainer bot',130,10,size=20,bold=True)
+messageCount.learn=0
+messageCount.person=0
+messageCount.personused=0
+messageCount.personuse=0
+chatHistory = Group()
+messageCount.amount=0
+def createMessage(message, person):
+    chatHistory.centerY -= 60
+    app.count += 1
+    if (person == 'user'):
+        chatHistory.add(
+            Rect(40, 300, 320, 50, fill='royalBlue'),
+            RegularPolygon(360, 345, 10, 3, fill='royalBlue'),
+            Label(message, 45, 325, fill='white', align='left')
+            )
+    elif (person == 'bot'):
+        chatHistory.add(
+            Rect(40, 300, 320, 50, fill='gainsboro'),
+            RegularPolygon(40, 345, 10, 3, fill='gainsboro'),
+            Label(message, 355, 325, align='right')
+            )
+    chatHistory.toBack()
+    print(rand_person1)
+def onKeyPress(key):
+    if 'q'in key:
+        chatHistory.clear()
+        messageCount.amount=0
+        messageCount.value='message count: ' + str(messageCount.amount)
+        messageCount.person+=1
+        WhosSpeaking.value=str(app.getTextInput('Who was speaking?'))
+        if messageCount.person%2==0:
+            for j in range(len(rand_person1)):
+                for i in rand_person1:
+                    rand_person1.remove(i)
+            print(rand_person2)
+        else:
+            for j in range(len(rand_person2)):
+                for i in rand_person2:
+                    rand_person2.remove(i)
+            print(rand_person1)
+    if 'space'in key:
+        app.A=str(app.getTextInput('Enter some text'))
+        for i in chatHistory.children:
+            i.centerY-=1
+            if i.centerY<0:
+                chatHistory.remove(i)
+        if messageCount.person==0:
+            kevin = rand_text[randrange(len(rand_text))]
+            for i in rand_person1:
+                if i==app.A:
+                    messageCount.personuse+=1
+            rand_text.append(app.A+'*')
+            messageCount.learn+=1
+            createMessage(app.A,'user')
+            createMessage(kevin, 'bot')
+            if messageCount.personuse==0:
+                rand_person1.append(app.A)
+            else:
+                messageCount.personuse=0
+        elif messageCount.person%2==0:
+            for j in rand_person1:
+                if j==app.A:
+                    messageCount.personused+=1
+            kevoin=rand_person2[randrange(len(rand_person2))]
+            createMessage(app.A,'user')
+            createMessage(kevoin, 'bot')
+            if messageCount.personused==0:
+                rand_person1.append(app.A)
+            else:
+                messageCount.personused=0
+        else:
+            for i in rand_person2:
+                if i==app.A:
+                    messageCount.personuse+=1
+            sally=rand_person1[randrange(len(rand_person1))]
+            createMessage(app.A,'user')
+            createMessage(sally,'bot')
+            if messageCount.personuse==0:
+                rand_person2.append(app.A)
+            else:
+                messageCount.personuse=0
+        messageCount.amount+=2
+        messageCount.value='message count: ' + str(messageCount.amount)
