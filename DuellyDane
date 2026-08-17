@@ -1,0 +1,380 @@
+#player1 first aim then player2 aim, after mash according keys then click according "shoot"key well 
+#6 takes away instructions  = resets aiming  ` turns off music
+m=Sound('cmu://733213/25920778/36+Icarus+And+Friends-[AudioTrimmer.com]+(1).mp3')
+m.play(loop=True)
+dread=Sound('cmu://733213/25966427/Dead+by+Daylight+The+Deathslinger+Chase+Music+Live-[AudioTrimmer.com].mp3')
+g=Sound('cmu://733213/25842887/desert-eagle-gunshot-14622.mp3')
+b=Sound('https://cdn.staticcrate.com/stock-hd/audio/soundscrate-block-from-hit-02.mp3')
+bl=Sound('cmu://733213/25842983/R293TMW-blow-out-candle-15783.mp3')
+s=Sound('cmu://733213/25843015/2023-10-28+22-18-33-[AudioTrimmer.com].mp3')
+sa=Sound('cmu://733213/25843018/2023-10-28+22-18-33-[AudioTrimmer.com]+(1).mp3')
+h=Sound('cmu://733213/25843023/holster-pistol-7132.mp3')
+rt=Sound('cmu://733213/25673035/LITTLER-[AudioTrimmer.com].mp3')
+import math
+Rect(0, 0, 400, 250, fill=gradient('lightBlue', 'burlyWood', start='top'))
+Rect(0, 250, 400, 150, fill='lemonChiffon')
+Polygon(175, 300, 225, 300, 250, 400, 150, 400, fill='navajoWhite')
+
+Rect(100, 150, 200, 150, fill='sienna')
+Line(200, 150, 200, 300, fill='burlyWood', lineWidth=200, dashes=(10, 1))
+
+Rect(115, 230, 35, 55, fill='peru', border='brown')
+Line(125, 233, 125, 283, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+Line(140, 233, 140, 283, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+
+Rect(250, 230, 35, 55, fill='peru', border='brown')
+Line(260, 233, 260, 283, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+Line(275, 233, 275, 283, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+
+Rect(175, 250, 50, 50, fill='saddleBrown', border='sienna')
+Line(200, 250, 200, 300, fill='sienna')
+Line(185, 265, 185, 285, fill='peru', lineWidth=20, dashes=(2, 1))
+Line(215, 265, 215, 285, fill='peru', lineWidth=20, dashes=(2, 1))
+
+Polygon(100, 220, 300, 220, 325, 245, 75, 245,
+        fill=gradient('saddleBrown', 'sienna', start='top'),
+        border='saddleBrown')
+Rect(80, 300, 240, 10, fill='sienna', border='brown')
+Line(85, 245, 85, 300, fill='brown', lineWidth=8, dashes=(14, 1))
+Line(315, 245, 315, 300, fill='brown', lineWidth=8, dashes=(14, 1))
+Line(140, 245, 140, 300, fill='brown', lineWidth=8, dashes=(14, 1))
+Line(260, 245, 260, 300, fill='brown', lineWidth=8, dashes=(14, 1))
+
+Rect(125, 75, 150, 75, fill='sienna')
+Line(200, 75, 200, 150, fill='burlyWood', lineWidth=150, dashes=(12, 1))
+Rect(90, 140, 220, 10, fill='sienna', border='brown')
+Rect(120, 65, 160, 10, fill='sienna', border='brown')
+
+Rect(150, 80, 100, 50, fill=gradient('peru', 'burlyWood', start='bottom'),
+     border='saddleBrown', borderWidth=4)
+Label('Saloon', 200, 105, fill='saddleBrown', size=28)
+Rect(115, 157, 35, 55, fill='peru', border='brown')
+Line(125, 160, 125, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+Line(140, 160, 140, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+
+Rect(183, 157, 35, 55, fill='peru', border='brown')
+Line(193, 160, 193, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+Line(208, 160, 208, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+
+Rect(250, 157, 35, 55, fill='peru', border='brown')
+Line(260, 160, 260, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+Line(275, 160, 275, 210, fill='saddleBrown', lineWidth=14, dashes=(16, 1))
+che=0
+hit=0
+# range of hit is 285 to 355 on the y axis
+derections=Label('Drag the mouse to aim',200,40,size=25,fill='white',bold=True)
+derections1=Label('Mash Q and E',65, 185,size=20,fill='blue',bold=True)
+derections2=Label('to charge speed then',100,205,size=19,fill='blue',bold=True)
+derections3=Label('V to SHOOT',65,225,size=20,bold=True,fill='blue')
+derections4=Label('Mash I and P', 335,185,size=20,bold=True,fill='red')
+derections5=Label('to charge speed then',300,205,size=19,bold=True,fill='red')
+derections6=Label('B to SHOOT',335,225,size=20,bold=True,fill='red')
+Person1Kneel=Group(Circle(40,310,10,),Oval(30,340,10,50,rotateAngle=10,fill='Blue'),Line(27,361,27,380,fill='sienna',lineWidth=4),Line(27,361,20,380,fill='sienna',lineWidth=4),Line(20,378,5,377,fill='sienna',lineWidth=4),Line(25,380,35,380,lineWidth=4),Line(5,375,8,383,lineWidth=4))
+Person2Kneel=Group(Circle(360,310,10),Oval(370,340,10,50,rotateAngle=-10,fill='red'),Line(374,361,374,380,fill='sienna',lineWidth=4),Line(374,361,381,380,fill='sienna',lineWidth=4),Line(381,378,395,377,fill='sienna',lineWidth=4),Line(376,380,365,380,lineWidth=4),Line(395,375,392,383,lineWidth=4))
+Person1=Group(Circle(30,300,10),
+Oval(30,330,10,50,fill='blue'),Rect(27,350,6,25,fill='sienna'),Rect(27,375,15,5))
+bullet1=Line(43,340,400,300,fill=rgb(255,191,94),opacity=0)
+Person2=Group(Circle(370,300,10),Oval(370,330,10,50,fill='red'),Rect(367,350,6,25,fill='sienna'),Rect(358,375,15,5))
+gun1=Group(Rect(28,350,10,20,fill='silver',opacity=0),Rect(28,350,10,5,fill=gradient('sienna','chocolate',start='top-left')),Rect(34,350,4,20,fill=gradient('darkgrey','gainsboro',start='top')),Arc(36,370,2,3,270,180,fill='dimgrey'))
+realgun1=Group(Rect(28,350,10,20,fill='silver',opacity=10),Rect(28,350,10,5,fill=gradient('sienna','chocolate',start='top-left')),Rect(34,350,4,20,fill=gradient('darkgrey','gainsboro',start='top')),Arc(36,370,2,3,270,180,fill='dimgrey'))
+bullet2=Line(0,300,360,340,fill=rgb(255,191,94),opacity=0)
+realgun2=Group(Rect(362,350,10,20,fill='silver',opacity=0),Polygon(372,350,372,354,362,354,362,352,fill='chocolate'),Rect(362,354,2.5,20,fill=gradient('dimgrey','silver',start='top')),RegularPolygon(362,353,2.5,3,rotateAngle=330,fill='dimgrey'),Rect(362,354,4,8,fill='dimgrey',border='grey'))
+gun2=Group(Rect(362,350,10,20,fill='silver',opacity=0),Polygon(372,350,372,354,362,354,362,352,fill='chocolate'),Rect(362,354,2.5,20,fill=gradient('dimgrey','silver',start='top')),RegularPolygon(362,353,2.5,3,rotateAngle=330,fill='dimgrey'),Rect(362,354,4,8,fill='dimgrey',border='grey'))
+hand2=Line(367,315,367,335,fill='burlywood')
+hand1=Line(33,315,33,335,fill='tan')
+redwins=Rect(0,0,400,400,fill='red',opacity=40,visible=False)
+redwins2=Label('Red Wins',200,200,size=50,fill='red',opacity=0)
+bluewins=Rect(0,0,400,400,fill='blue',opacity=40,visible=False)
+bluewins2=Label('Blue Wins',200,200,size=50,fill='blue',opacity=0)
+mercywin=Label('Merciful',90,165,size=35,fill='yellow',opacity=0)
+badwin=Rect(0,0,400,400,fill='grey',opacity=40,visible=False)
+badwin2=Label('Congradulations, You cannot aim',200,200,size=20,fill='white',opacity=0)
+smoke=Rect(42,295,2.5,10,fill='grey',opacity=60,visible=False)
+Bluearrow=Group(Rect(25,230,10,30,fill='blue'),Label('V',30,270,size=50,fill='blue'))
+Redarrow=Group(Rect(365,230,10,30,fill='Red'),Label('V',370,270,size=50,fill='Red'))
+Person1Kneel.visible=False
+Person2Kneel.visible=False
+realgun1.visible=False
+realgun2.visible=False
+derections1.opacity=0
+derections2.opacity=0
+derections3.opacity=0
+derections4.opacity=0
+derections5.opacity=0
+derections6.opacity=0
+Redarrow.visible=False
+quick=1.06
+cool=2
+pool=1.06
+counter=0
+troll=1.06
+meno=0
+hol=0
+los=0
+losr=0
+dum=0
+dumb=0
+chec=0
+smart=0
+snake=0
+nomu=0
+app.stepsPerSecond=20
+def onMouseDrag(mouseX,mouseY):
+    global counter,nomu
+    m.pause()
+    derections.opacity=0
+        
+    if counter==0:
+        bullet1.y2=mouseY
+        bullet1.opacity=70
+    if counter==1:
+        bullet2.y1=mouseY
+        bullet2.opacity=70
+        pass
+def onMouseRelease(mouseX,mouseY):
+    global counter,nomu
+    if counter==0: 
+        bullet1.opacity=0
+        Redarrow.visible=True
+        Bluearrow.visible=False
+        pass
+    if counter==1:
+        bullet2.opacity=0
+        if smart==0:
+            derections1.opacity=100
+            derections2.opacity=100
+            derections3.opacity=100
+            derections4.opacity=100
+            derections5.opacity=100
+            derections6.opacity=100
+        Redarrow.visible=False
+        dread.play(loop=True)
+        pass
+    counter=counter+1
+    pass
+def onKeyPress(key):
+    global counter,quick,troll,cool,pool,che,chec,smart,nomu
+    m.pause()
+    if '='in key:
+        counter=0
+    if '6'in key:
+        smart=1
+    if '`' in key:
+        nomu=1
+    if 'q'and 'e' in key:
+        quick=quick*0.97
+        hand1.y2=hand1.y2+quick
+        #print(quick)
+        derections1.opacity=0
+        derections2.opacity=0
+        derections3.opacity=0
+        pass
+    if 'p' and 'i' in key:
+        troll=troll*0.97
+        pool=pool/0.97
+        hand2.y2=hand2.y2+troll
+        #print(troll)
+        derections4.opacity=0
+        derections5.opacity=0
+        derections6.opacity=0
+    if bullet1.opacity==0:
+        if 'v' in key and quick<1 and che==0:
+            realgun1.visible=True
+            realgun1.rotateAngle=0
+            gun1.visible=False
+            che=1
+            derections1.opacity=0
+            derections2.opacity=0
+            derections3.opacity=0
+            derections4.opacity=0
+            derections5.opacity=0
+            derections6.opacity=0
+    if bullet2.opacity==0:
+        if 'b' in key and troll<1 and chec==0:
+            realgun2.visible=True
+            realgun2.rotateAngle=0
+            gun2.visible=False
+            chec=1
+            derections1.opacity=0
+            derections2.opacity=0
+            derections3.opacity=0
+            derections4.opacity=0
+            derections5.opacity=0
+            derections6.opacity=0
+            
+def onStep():
+    global hit,meno,hol,los,losr,dum,dumb,snake,nomu
+    if quick<1.03 or troll<1.03:
+        snake=randrange(90)
+        print(snake)
+        if snake==2 and nomu==0 and hit==0:
+            rt.play(loop=False)
+    if nomu==1:
+        dread.pause()
+        m.pause()
+    if counter==0:
+        Bluearrow.visible=True
+    for de in range(285,355):
+        if bullet2.y1==de and bullet2.opacity==100:
+            hit=2
+            meno=1
+        if bullet1.y2==de and bullet1.opacity==100:
+            hit=1
+            meno=1
+    for al in range(284):
+        if bullet1.y2==al and bullet1.opacity==100:
+            dum=2
+        if bullet2.y1==al and bullet2.opacity==100:
+            dumb=2
+    for me in range(356,380):
+        if bullet1.y2==me and bullet1.opacity==100:
+            hit=3
+        if bullet2.y1==me and bullet2.opacity==100:
+            hit=4
+    if realgun1.visible==True and hit==0:
+        if realgun1.rotateAngle>-89:
+            realgun1.rotateAngle=realgun1.rotateAngle-3/(quick/2)
+        if realgun1.centerY>340:
+            realgun1.centerY=realgun1.centerY-1.5/quick
+        if realgun1.rotateAngle<-89 and los==0:
+            bullet1.opacity=100
+            g.play(loop=False)
+            los=1
+    if realgun2.visible==True and hit==0:
+        if realgun2.rotateAngle<90:
+            realgun2.rotateAngle=realgun2.rotateAngle+3*(pool*2)
+        if realgun2.centerY>340:
+            realgun2.centerY=realgun2.centerY-1.5/troll
+        if realgun2.rotateAngle>88 and losr==0:
+            bullet2.opacity=100
+            g.play(loop=False)
+            losr=1
+            
+    if realgun1.visible==True and hit!=4:
+        hand1.y2=realgun1.bottom-3
+        hand1.x2=realgun1.left+2
+    if realgun2.visible==True and hit!=3:
+        hand2.y2=realgun2.top+3
+        hand2.x2=realgun2.right-3
+    if hit==2:
+        dread.pause()
+        hand1.y2=bullet2.y1-3
+        if meno==1:
+            bullet2.opacity=0
+            bullet1.opacity=0
+            badwin.visible=False
+            badwin2.opacity=0
+            sleep(3)
+            meno=2
+            b.play(loop=False)
+        Person1.rotateAngle=-90
+        Person1.centerY=370
+        hand1.visible=False
+        realgun1.visible=True
+        gun1.visible=False
+        realgun1.centerY=370
+        realgun1.rotateAngle=90
+        if realgun2.rotateAngle<120:
+            sa.play(loop=False)
+        if realgun2.rotateAngle<720:
+            realgun2.rotateAngle=realgun2.rotateAngle+10
+        if realgun2.rotateAngle>600 and realgun2.centerY<350:
+                realgun2.centerY=realgun2.centerY+1
+        if realgun2.centerY>=350 and hol==0:
+            redwins.visible=True
+            redwins2.opacity=100
+            h.play(loop=False)
+            hol=1
+    if hit==1:
+        dread.pause()
+        hand2.y1=bullet1.y2+3
+        if meno==1:
+            bullet1.opacity=0
+            bullet2.opacity=0
+            badwin.visible=False
+            badwin2.opacity=0
+            sleep(3)
+            meno=2
+            b.play(loop=False)
+        Person2.rotateAngle=90
+        Person2.centerY=370
+        hand2.visible=False
+        realgun2.visible=True
+        gun2.visible=False
+        realgun2.centerY=370
+        realgun2.rotateAngle=90
+        if realgun1.rotateAngle>-180 and realgun1.centerY>320 and realgun1.centerX<43:
+            realgun1.rotateAngle=realgun1.rotateAngle-3.5
+            realgun1.centerY=realgun1.centerY-0.55
+            realgun1.centerX=realgun1.centerX+0.3
+        if realgun1.rotateAngle<-180 and meno==2:
+            smoke.visible=True
+            sleep(1)
+            bl.play(loop=False)
+            smoke.visible=False
+            sleep(1.5)
+            meno=3
+            bluewins.visible=True
+            bluewins2.opacity=100
+    if hit==3:
+        dread.pause()
+        if meno<2:
+            hand2.y1=bullet1.y2
+            bullet1.opacity=0
+            bullet2.opacity=0
+            badwin.visible=False
+            badwin2.opacity=0
+            sleep(2)
+            Person2.visible=False
+            Person2Kneel.visible=True
+            gun2.visible=False
+            realgun2.visible=True
+            realgun2.centerY=380
+            realgun2.rotateAngle=-90
+            hand2.y1=370
+            hand2.x1=372
+            meno=2
+        if realgun1.rotateAngle<0 and realgun1.centerY<360:
+           realgun1.rotateAngle=realgun1.rotateAngle+4.5
+           realgun1.centerY=realgun1.centerY+1
+        if realgun1.centerY>=359.5 and hol==0:
+            h.play(loop=False)
+            hol=1
+            bluewins.visible=True
+            bluewins2.opacity=100
+            mercywin.opacity=100
+    if hit==4:
+        dread.pause()
+        if meno<2:
+            hand1.y1=bullet2.y1
+            bullet2.opacity=0
+            bullet1.opacity=0
+            badwin.visible=False
+            badwin2.opacity=0
+            sleep(2)
+            Person1.visible=False
+            Person1Kneel.visible=True
+            gun1.visible=False
+            realgun1.visible=True
+            realgun1.centerY=377
+            realgun1.rotateAngle=-60
+            hand1.y1=370
+            hand1.x1=28
+            meno=2
+        if realgun2.rotateAngle>0 and realgun2.centerY<360:
+            realgun2.rotateAngle=realgun2.rotateAngle-4.5
+            realgun2.centerY=realgun2.centerY+1
+        if realgun2.centerY>=359.5 and hol==0:
+            redwins.visible=True
+            h.play(loop=False)
+            hol=1
+            redwins2.opacity=100
+            mercywin.opacity=100
+    if dum==2 and dumb==2:
+        dread.pause()
+        bullet1.opacity=0
+        bullet2.opacity=0
+        sleep(1)
+        badwin.visible=True
+        badwin2.opacity=100
+        meno=2
